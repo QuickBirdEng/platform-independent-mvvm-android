@@ -1,7 +1,5 @@
 package com.quickbirdstudios.mvvmtalk
 
-import android.util.Log
-import io.reactivex.Observable
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -13,12 +11,11 @@ import org.junit.Assert.*
  */
 class ExampleUnitTest {
     @Test
-    fun addition_isCorrect() {
-        val e = Observable.fromArray(1,2,3,4)
-                .doOnNext { print(it) }
-                .firstOrError()
-                .blockingGet()
+    fun testTranslation() {
+        val viewModel = TranslatorViewModel()
 
-        print("Element $e")
+        viewModel.input.englishText.set("Dog")
+
+        assertEquals(viewModel.output.germanText.get(),"Hund")
     }
 }
