@@ -9,9 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.quickbirdstudios.mvvmtalk.databinding.FragmentTranslatorBinding
-import com.quickbirdstudios.quickboot.architecture.QuickFragment
+import com.quickbirdstudios.rx.extension.disposedBy
 
-class TranslatorFragment : QuickFragment() {
+class TranslatorFragment : BaseFragment() {
     private val viewModel: TranslatorViewModel by viewModel()
     private lateinit var binding: FragmentTranslatorBinding
 
@@ -33,6 +33,7 @@ class TranslatorFragment : QuickFragment() {
 
                     englishText.saveToClipboard()
                 }
+                .disposedBy(disposeBag)
     }
 
     private fun String.saveToClipboard() {
