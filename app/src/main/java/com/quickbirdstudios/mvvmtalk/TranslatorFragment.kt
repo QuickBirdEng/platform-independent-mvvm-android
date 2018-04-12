@@ -29,11 +29,15 @@ class TranslatorFragment : BaseFragment() {
         viewModel.output.saveGermanTranslation
                 .observe()
                 .subscribe { englishText ->
-                    Toast.makeText(activity, "Saved to clipboard", Toast.LENGTH_SHORT).show()
+                    showMessage("Saved to clipboard")
 
                     englishText.saveToClipboard()
                 }
                 .disposedBy(disposeBag)
+    }
+
+    private fun showMessage(message: String) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun String.saveToClipboard() {

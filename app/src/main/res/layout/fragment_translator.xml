@@ -2,7 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:quick="http://schemas.android.com/apk/res-auto">
     <data>
-
         <variable
             name="viewModel"
             type="com.quickbirdstudios.mvvmtalk.TranslatorViewModel" />
