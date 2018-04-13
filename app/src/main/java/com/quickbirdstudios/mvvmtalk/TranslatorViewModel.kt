@@ -2,7 +2,8 @@ package com.quickbirdstudios.mvvmtalk
 
 import android.arch.lifecycle.ViewModel
 import io.reactivex.Observable
-import io.reactivex.rxkotlin.Observables
+import io.reactivex.rxkotlin.withLatestFrom
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
@@ -11,7 +12,7 @@ import javax.inject.Inject
  * Created by Malte Bucksch on 10/04/2018.
  */
 interface TranslatorViewModelInput {
-    val englishText: PublishSubject<String>
+    val englishText: BehaviorSubject<String>
     val saveTrigger: PublishSubject<Unit>
 }
 
@@ -36,7 +37,7 @@ class TranslatorViewModelImpl @Inject constructor() :
 
     //   *** inputs ***
 
-    override val englishText = PublishSubject.create<String>()
+    override val englishText = BehaviorSubject.createDefault("")
 
     override val saveTrigger = PublishSubject.create<Unit>()
 
@@ -49,6 +50,6 @@ class TranslatorViewModelImpl @Inject constructor() :
             .map { !it.isEmpty() }
 
     override val savedGermanTranslation =
-            Observables.combineLatest(output.germanText, input.saveTrigger)
-                    .map { (german, _) -> german }
+            input.saveTrigger.withLatestFrom(germanText)
+                    .map { (_, german) -> german }
 }
