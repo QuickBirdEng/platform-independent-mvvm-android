@@ -7,10 +7,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.quickbirdstudios.mvvmtalk.databinding.FragmentTranslatorBinding
+import io.reactivex.subjects.Subject
 import kotlinx.android.synthetic.main.fragment_translator.*
 
 class TranslatorFragment : BaseFragment() {
@@ -30,19 +32,16 @@ class TranslatorFragment : BaseFragment() {
 
         //   *** supply inputs ***
 
-        RxTextView.textChanges(englishInputEditText)
-                .subscribe { newText -> viewModel.input.englishText.onNext(newText.toString()) }
-
-        RxView.clicks(saveTextButton)
-                .subscribe { viewModel.input.saveTrigger.onNext(Unit) }
+        viewModel.input.englishText.receiveTextChangesFrom(englishInputEditText)
+        viewModel.input.saveTrigger.receiveClicksFrom(saveTextButton)
 
         //   *** subscribe to outputs ***
 
         viewModel.output.germanText
-                .subscribe { germanText -> germanOutputEditText.text = germanText }
+                .subscribe { germanOutputEditText.text = it }
 
         viewModel.output.isSavingAllowed
-                .subscribe { isSavingAllowed -> saveTextButton.isEnabled = isSavingAllowed }
+                .subscribe { saveTextButton.isEnabled = it }
 
         viewModel.output.savedGermanTranslation
                 .subscribe { germanText ->
@@ -50,6 +49,24 @@ class TranslatorFragment : BaseFragment() {
 
                     germanText.saveToClipboard()
                 }
+    }
+
+
+
+
+
+
+
+
+
+    fun Subject<String>.receiveTextChangesFrom(editText: EditText) {
+        RxTextView.textChanges(editText)
+                .subscribe { newText -> this.onNext(newText.toString()) }
+    }
+
+    fun Subject<Unit>.receiveClicksFrom(view: View) {
+        RxView.clicks(view)
+                .subscribe { this.onNext(Unit) }
     }
 
 

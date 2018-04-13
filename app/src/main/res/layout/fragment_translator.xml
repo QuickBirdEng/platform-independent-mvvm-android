@@ -35,12 +35,16 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:id="@+id/germanOutputEditText"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/saveTextButton"
+            android:background="@drawable/button_selector_rounded_main_color"
+            android:textColor="#FFFFFF"
             android:text="@string/button_save"/>
 
     </LinearLayout>

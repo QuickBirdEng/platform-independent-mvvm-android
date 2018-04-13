@@ -2,4 +2,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="activity_margin">16dp</dimen>
     <dimen name="card_margin">8dp</dimen>
+
+    <dimen name="button_corner_radius">31dp</dimen>
+
 </resources>
