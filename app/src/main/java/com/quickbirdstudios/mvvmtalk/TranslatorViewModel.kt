@@ -1,11 +1,9 @@
 package com.quickbirdstudios.mvvmtalk
 
 import android.arch.lifecycle.ViewModel
-import com.quickbirdstudios.rx.databinding.BindableBoolean
-import com.quickbirdstudios.rx.databinding.BindableField
-import com.quickbirdstudios.rx.databinding.RxTrigger
-import com.quickbirdstudios.rx.databinding.toBindable
+import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 
@@ -13,14 +11,14 @@ import javax.inject.Inject
  * Created by Malte Bucksch on 10/04/2018.
  */
 interface TranslatorViewModelInput {
-    val englishText: BindableField<String>
-    val saveTrigger: RxTrigger
+    val englishText: PublishSubject<String>
+    val saveTrigger: PublishSubject<Unit>
 }
 
 interface TranslatorViewModelOutput {
-    val germanText: BindableField<String>
-    val isSavingAllowed: BindableBoolean
-    val saveGermanTranslation: BindableField<String>
+    val germanText: Observable<String>
+    val isSavingAllowed: Observable<Boolean>
+    val savedGermanTranslation: Observable<String>
 }
 
 abstract class TranslatorViewModel : ViewModel() {
@@ -38,23 +36,19 @@ class TranslatorViewModelImpl @Inject constructor() :
 
     //   *** inputs ***
 
-    override val englishText = BindableField.just("")
+    override val englishText = PublishSubject.create<String>()
 
-    override val saveTrigger = RxTrigger()
+    override val saveTrigger = PublishSubject.create<Unit>()
 
     //   *** outputs ***
 
-    override val germanText = input.englishText.asObservable()
+    override val germanText = input.englishText
             .map { TranslatorEngine.translateToGerman(it) }
-            .toBindable()
 
-    override val isSavingAllowed = input.englishText.asObservable()
+    override val isSavingAllowed = input.englishText
             .map { !it.isEmpty() }
-            .toBindable()
 
-    override val saveGermanTranslation =
-            Observables.combineLatest(output.germanText.asObservable(), input.saveTrigger.asObservable())
-                    .map { (english, _) -> english }
-                    .toBindable()
-
+    override val savedGermanTranslation =
+            Observables.combineLatest(output.germanText, input.saveTrigger)
+                    .map { (german, _) -> german }
 }

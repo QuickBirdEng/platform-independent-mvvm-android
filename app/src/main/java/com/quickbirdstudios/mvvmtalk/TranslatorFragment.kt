@@ -8,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.jakewharton.rxbinding2.view.RxView
+import com.jakewharton.rxbinding2.widget.RxTextView
 import com.quickbirdstudios.mvvmtalk.databinding.FragmentTranslatorBinding
-import com.quickbirdstudios.rx.extension.disposedBy
+import kotlinx.android.synthetic.main.fragment_translator.*
 
 class TranslatorFragment : BaseFragment() {
     private val viewModel: TranslatorViewModel by viewModel()
@@ -19,22 +21,43 @@ class TranslatorFragment : BaseFragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = FragmentTranslatorBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
+//        binding.viewModel = viewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.output.saveGermanTranslation
-                .asObservable()
-                .subscribe { englishText ->
+        //   *** supply inputs ***
+
+        RxTextView.textChanges(englishInputEditText)
+                .subscribe { newText -> viewModel.input.englishText.onNext(newText.toString()) }
+
+        RxView.clicks(saveTextButton)
+                .subscribe { viewModel.input.saveTrigger.onNext(Unit) }
+
+        //   *** subscribe to outputs ***
+
+        viewModel.output.germanText
+                .subscribe { germanText -> germanOutputEditText.text = germanText }
+
+        viewModel.output.isSavingAllowed
+                .subscribe { isSavingAllowed -> saveTextButton.isEnabled = isSavingAllowed }
+
+        viewModel.output.savedGermanTranslation
+                .subscribe { germanText ->
                     showMessage("Saved to clipboard")
 
-                    englishText.saveToClipboard()
+                    germanText.saveToClipboard()
                 }
-                .disposedBy(disposeBag)
     }
+
+
+
+
+
+
+
 
     private fun showMessage(message: String) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
