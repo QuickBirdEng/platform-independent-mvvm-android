@@ -27,7 +27,7 @@ class TranslatorFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.output.saveGermanTranslation
-                .observe()
+                .asObservable()
                 .subscribe { englishText ->
                     showMessage("Saved to clipboard")
 

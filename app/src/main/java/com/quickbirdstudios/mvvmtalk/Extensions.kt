@@ -9,5 +9,5 @@ import io.reactivex.Observable
 /**
  * Created by Malte Bucksch on 12/04/2018.
  */
-fun <T : Any> BindableField<T>.observe(): Observable<T> = this.toObservable().filterNotNull()
-fun RxTrigger.observe(): Observable<Unit> = this.toObservable()
+fun <T : Any> BindableField<T>.asObservable(): Observable<T> = this.toObservable().filterNotNull()
+fun RxTrigger.asObservable(): Observable<Unit> = this.toObservable()

@@ -44,16 +44,16 @@ class TranslatorViewModelImpl @Inject constructor() :
 
     //   *** outputs ***
 
-    override val germanText = input.englishText.observe()
+    override val germanText = input.englishText.asObservable()
             .map { TranslatorEngine.translateToGerman(it) }
             .toBindable()
 
-    override val isSavingAllowed = input.englishText.observe()
+    override val isSavingAllowed = input.englishText.asObservable()
             .map { !it.isEmpty() }
             .toBindable()
 
     override val saveGermanTranslation =
-            Observables.combineLatest(output.germanText.observe(), input.saveTrigger.observe())
+            Observables.combineLatest(output.germanText.asObservable(), input.saveTrigger.asObservable())
                     .map { (english, _) -> english }
                     .toBindable()
 
