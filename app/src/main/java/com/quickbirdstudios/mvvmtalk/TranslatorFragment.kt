@@ -11,21 +11,16 @@ import android.widget.EditText
 import android.widget.Toast
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
-import com.quickbirdstudios.mvvmtalk.databinding.FragmentTranslatorBinding
 import io.reactivex.subjects.Subject
 import kotlinx.android.synthetic.main.fragment_translator.*
 
 class TranslatorFragment : BaseFragment() {
     private val viewModel: TranslatorViewModel by viewModel()
-    private lateinit var binding: FragmentTranslatorBinding
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        binding = FragmentTranslatorBinding.inflate(inflater, container, false)
-//        binding.viewModel = viewModel
-        return binding.root
-    }
+                              savedInstanceState: Bundle?) =
+            inflater.inflate(R.layout.fragment_translator, container, false)!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,29 +47,15 @@ class TranslatorFragment : BaseFragment() {
     }
 
 
-
-
-
-
-
-
-
-    fun Subject<String>.receiveTextChangesFrom(editText: EditText) {
+    private fun Subject<String>.receiveTextChangesFrom(editText: EditText) {
         RxTextView.textChanges(editText)
                 .subscribe { newText -> this.onNext(newText.toString()) }
     }
 
-    fun Subject<Unit>.receiveClicksFrom(view: View) {
+    private fun Subject<Unit>.receiveClicksFrom(view: View) {
         RxView.clicks(view)
                 .subscribe { this.onNext(Unit) }
     }
-
-
-
-
-
-
-
 
     private fun showMessage(message: String) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()

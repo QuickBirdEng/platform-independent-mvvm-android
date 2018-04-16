@@ -1,51 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:quick="http://schemas.android.com/apk/res-auto">
-    <data>
-        <variable
-            name="viewModel"
-            type="com.quickbirdstudios.mvvmtalk.TranslatorViewModel" />
-    </data>
 
-    <LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_margin">
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_margin">
+        android:layout_height="wrap_content">
 
-        <android.support.v7.widget.CardView
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <android.support.design.widget.TextInputLayout
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/card_margin">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/englishInputEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_margin">
+                android:hint="@string/text_english_hint" />
+        </android.support.design.widget.TextInputLayout>
+    </android.support.v7.widget.CardView>
 
-                <android.support.design.widget.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/englishInputEditText"
-                    android:hint="@string/text_english_hint" />
-            </android.support.design.widget.TextInputLayout>
-        </android.support.v7.widget.CardView>
+    <TextView
+        android:id="@+id/germanOutputEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:id="@+id/germanOutputEditText"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+    <Button
+        android:id="@+id/saveTextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_selector_rounded_main_color"
+        android:text="@string/button_save"
+        android:textColor="#FFFFFF" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/saveTextButton"
-            android:background="@drawable/button_selector_rounded_main_color"
-            android:textColor="#FFFFFF"
-            android:text="@string/button_save"/>
-
-    </LinearLayout>
-</layout>
+</LinearLayout>
