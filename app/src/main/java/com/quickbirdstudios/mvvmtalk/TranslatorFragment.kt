@@ -33,7 +33,7 @@ class TranslatorFragment : BaseFragment() {
         //   *** subscribe to outputs ***
 
         viewModel.output.germanText
-                .subscribe { germanOutputEditText.text = it }
+                .subscribe { germanOutputTextView.text = it }
 
         viewModel.output.isSavingAllowed
                 .subscribe { saveTextButton.isEnabled = it }
