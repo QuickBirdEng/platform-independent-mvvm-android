@@ -12,10 +12,10 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun testTranslation() {
-        val viewModel = TranslatorViewModel()
+        val viewModel: TranslatorViewModel = TranslatorViewModelImpl()
 
-        viewModel.input.englishText.set("Dog")
+        viewModel.input.englishText.onNext("Dog")
 
-        assertEquals(viewModel.output.germanText.get(),"Hund")
+        viewModel.output.germanText.test().assertValue("Dog translated")
     }
 }
